@@ -1,25 +1,18 @@
 import pandas as pd
+import ast
+import os
 
-import pandas as pd
-import ast  # 用于将字符串安全地转换为列表
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+input_file = os.path.join(BASE_DIR, "..", "current_input.xlsx")
+output_file = os.path.join(BASE_DIR, "..", "test_outputs", "route_summary.xlsx")
 
-# 读取 .xlsx 文件中的特定 sheet
-
-sheet_name = "线路简单"  # 将这里的 "Sheet1" 替换为你要读取的工作表名称
-
-df = pd.read_excel("输入.xlsx", sheet_name=sheet_name)
-
-# 将 path 字段的字符串转换回列表
-
+sheet_name = "线路简单"
+df = pd.read_excel(input_file, sheet_name=sheet_name)
 df["path"] = df["path"].apply(ast.literal_eval)
-
-# 将 DataFrame 转换回字典列表
-
 routes = df.to_dict('records')
 
-# 定义表头
 headers = [
-    "配送模式", "路由&资源组合", "单票1公斤", "序号", "路由", "全程距离（公里）",
+    "备注1", "备注2", "单票1公斤", "序号", "路由", "全程距离（公里）",
     "平台时效要求", "全程时限（天）", "全程时限（小时）", "总成本：元/公斤量纲部分",
     "总成本：元/票量纲部分", "总成本：折算至元/票", "分段成本（折算至元/票）国内段",
     "分段成本（折算至元/票）跨境干线", "分段成本（折算至元/票）清关",
@@ -35,21 +28,14 @@ headers = [
     "国际段时限末端派送（小时）", "国际段时限合计（天）"
 ]
 
-# 创建一个空的 DataFrame，只包含表头
 data = []
 for i, route in enumerate(routes, start=1):
     row = {
-        "配送模式": route["delivery_method"],
-        "路由&资源组合": route["name"],
         "序号": i,
         "路由": " -> ".join(route["path"])
     }
     data.append(row)
 
-df = pd.DataFrame(data, columns=headers)
-
-# 将 DataFrame 保存为 Excel 文件
-file_path = r"D:\VsCodeProjects\中乌路由pro\delivery_info.xlsx"
-df.to_excel(file_path, index=False)
-
-print(f"Excel 文件已生成，路径为: {file_path}")
+df_out = pd.DataFrame(data, columns=headers)
+df_out.to_excel("delivery_info.xlsx", index=False)
+print("✅ 生成 delivery_info.xlsx 成功")
