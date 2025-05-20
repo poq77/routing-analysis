@@ -1,29 +1,29 @@
 import os
 
-python_file_path = r'D:\VsCodeProjects\中乌路由pro\子文件\生成之前表的结构和属性.py'
+python_file_path = r'D:\VsCodeProjects\routing_analysis\scripts\generate_route_summary.py'
 return_code = os.system(f'python {python_file_path}')
 
 
-python_file_path = r'D:\VsCodeProjects\中乌路由pro\子文件\生成揽收仓.py'
+python_file_path = r'D:\VsCodeProjects\routing_analysis\scripts\generate_pickup.py'
 return_code = os.system(f'python {python_file_path}')
 
 
-python_file_path = r'D:\VsCodeProjects\中乌路由pro\子文件\shiy11.py'
+python_file_path = r'D:\VsCodeProjects\routing_analysis\scripts\generate_transfer_and_line.py'
 return_code = os.system(f'python {python_file_path}')
 
 
-python_file_path = r'D:\VsCodeProjects\中乌路由pro\子文件\匹配末端配送.py'
+python_file_path = r'D:\VsCodeProjects\routing_analysis\scripts\match_last_mile.py'
 return_code = os.system(f'python {python_file_path}')
 
 
-python_file_path = r'D:\VsCodeProjects\中乌路由pro\子文件\合并表.py'
+python_file_path = r'D:\VsCodeProjects\routing_analysis\scripts\merge_outputs.py'
 return_code = os.system(f'python {python_file_path}')
 
 import openpyxl
 import re
 
 # 加载 Excel 文件
-file_path = "D:\\VsCodeProjects\\中乌路由pro\\中乌路由.xlsx"  # 请替换为你的文件路径
+file_path = "D:\\VsCodeProjects\\routing_analysis\\中乌路由.xlsx"  # 请替换为你的文件路径
 wb = openpyxl.load_workbook(file_path)
 ws = wb.active  # 选择活动工作表
 
@@ -95,7 +95,7 @@ for row in range(2, max_row + 1):
         ws[f"{col}{row}"] = formula.format(row=row)
 
 # 保存 Excel 文件
-output_file = "D:\\VsCodeProjects\\中乌路由pro\\中乌路由pro.xlsx"
+output_file = "D:\\VsCodeProjects\\routing_analysis\\routing_analysis.xlsx"
 wb.save(output_file)
 
 print(f"Excel 文件已更新，并保存为 '{output_file}'，G列和U列已动态填充，dp={dp}")
